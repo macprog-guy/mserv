@@ -1,0 +1,50 @@
+{
+  "name": "mserv",
+  "version": "0.2.0",
+  "description": "Thin wrapper around amqplib to facilitate the creation of microservices communicating through an AMQP message broker.",
+  "keywords": [
+    "amqp",
+    "microservice",
+    "microservices",
+    "communicating",
+    "service",
+    "services",
+    "messaging",
+    "broker",
+    "koa",
+    "generator"
+  ],
+  "homepage":"https://github.com/macprog-guy/mserv",
+  "main": "./lib/service.js",
+  "scripts": {
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha -R spec --harmony -t 5000 -u bdd --recursive ./test"
+  },
+  "author": {
+    "name": "Eric Methot",
+    "email": "eric@macprog.com",
+    "url": "https://github.com/macprog-guy/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/macprog-guy/mserv.git"
+  },
+  "bugs": {
+    "url": "http://github.com/macprog-guy/mserv/issues"
+  },
+
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.3.2",
+    "async": "^1.4.2",
+    "bluebird": "^2.9.34",
+    "co": "^4.6.0",
+    "debug": "^2.2.0",
+    "koa-compose": "^2.3.0",
+    "lodash": "^3.10.1",
+    "slugid": "^1.0.3"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.2.5"
+  }
+}
