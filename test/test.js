@@ -172,4 +172,19 @@ describe('mserv', function(){
 		)
 
 	})
+
+
+	it('should not raise an exception when returning null', wrappedTest(function*(){
+
+		var service = mserv()
+
+		service.action({
+			name: 'noop',
+			handler: function*(){
+				return null
+			}
+		})
+
+		yield service.invoke('noop')
+	}))
 })
