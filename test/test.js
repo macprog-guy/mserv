@@ -193,4 +193,22 @@ describe('mserv', function(){
 
 		yield service.invoke('noop')
 	}))
+
+
+	it('should raise timeout error', wrappedTest(function*(){
+
+		var service = mserv({timeout:1000, disableAMQPBypass:true})
+
+		try {
+			yield service.invoke('anyoneThere')
+			throw new Error('Invoke did not timeout')
+		}
+		catch(err) {
+			if (err.message === 'Invoke did not timeout')
+				throw err
+			err.name.should.equal('Error')
+			err.message.should.equal('Timeout: anyoneThere did not reply within the alloted 1000ms')
+		}
+	}))
+
 })

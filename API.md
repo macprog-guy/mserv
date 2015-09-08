@@ -46,6 +46,8 @@ When true AMQP connection will always be used when invoking services even when t
 - `disableAutoconnect`: 
 When true the service won't automatically connect upon creation. The connection will need to be established manually. The default value is false.
 
+- `timeout`:
+Number of milliseconds that a microservice invocation will wait for a response before raising a timeout error. Defaults to 2000ms.
 
 
 
@@ -267,6 +269,19 @@ var jpgImage = service.invoke('image.convert.toJPG',image,{contentType:'image/pn
 
 ```
 
+NOTE: It possible to have many invoke commands executed simultaneously. When using `co` simply yield an array of invoke calls, which return promises to execute them all in parallel. Or yield an object whose values are invoke calls.
+
+```js
+
+co(function*(){
+	yield [
+		service.invoke('document.pages.fetch', {page:1}),
+		service.invoke('document.pages.fetch', {page:2}),
+		service.invoke('document.pages.fetch', {page:3})
+	]
+})
+
+``
 
 
 
