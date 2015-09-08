@@ -151,7 +151,7 @@ describe('mserv', function(){
 		should.equal(res3, 31)
 	}))
 
-	it('should forward errors properly', function(done){
+	it('should forward errors properly', wrappedTest(function*(){
 
 		var service = mserv()
 
@@ -159,19 +159,25 @@ describe('mserv', function(){
 			name: 'throw',
 			handler: function*(){
 				let err = new Error('Test Error')
-				err.payload = {a:3}
+				err.payload = {a:3, b:undefined}
 				throw err
 			}
 		})
 
-		co(function*(){
-			let result = yield service.invoke('throw')
-		}).then(
-			function() { done(new Error('Expected action to throw')) },
-			function(err) { done() }
-		)
+		try {
+			yield service.invoke('throw')
+			throw new Error('Invoke did not throw')
+		}
+		catch(err) {
+			if (err.message === 'Invoke did not throw')
+				throw err 
 
-	})
+			err.name.should.equal('Error')
+			err.message.should.equal('Test Error')
+			err.payload.should.eql({a:3, b:undefined})
+		}
+
+	}))
 
 
 	it('should not raise an exception when returning null', wrappedTest(function*(){

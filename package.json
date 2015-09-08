@@ -1,6 +1,6 @@
 {
   "name": "mserv",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Thin wrapper around amqplib to facilitate the creation of microservices communicating through an AMQP message broker.",
   "keywords": [
     "amqp",
