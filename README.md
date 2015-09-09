@@ -68,15 +68,17 @@ service.action({
 Actions are not executed in the dark. They are bound to a context object 
 with the following keys:
 
-- `headers$` : is the AMQP message.properties
-- `amqp$`    : is the AMQP message.fields
-- `req`      : is the AMQP message.content
-- `res`      : is the response and initially an empty object
+- `headers$` : the AMQP message.properties
+- `amqp$`    : the AMQP message.fields
+- `req`      : the AMQP message.content
+- `res`      : the response and initially an empty object
 
-- `service`  : is the service itself
-- `invoke`   : is a shortcut to service.invoke.
-- `command`  : is a shortcut to service.command
-- `publish`  : is a shortcut to service.publish
+- `service`  : the service itself
+- `invoke`   : a shortcut to service.invoke.
+- `command`  : a shortcut to service.command
+- `publish`  : a shortcut to service.publish
+- `log`      : a shortcut to service.log a bunyan logger
+- `sleep`    : a shortcut to service.sleep
 
 
 

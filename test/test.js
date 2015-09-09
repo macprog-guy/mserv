@@ -207,8 +207,7 @@ describe('mserv', function(){
 			if (err.message === 'Invoke did not timeout')
 				throw err
 			err.name.should.equal('Error')
-			err.message.should.equal('Timeout: anyoneThere did not reply within the alloted 1000ms')
+			err.message.should.equal('Timeout')
 		}
 	}))
-
 })

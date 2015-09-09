@@ -2,6 +2,7 @@
 
 - [mserv](#mserv)
 	- [`constructor(options)`](#mserv)
+	- [`state()`](#state---string)
 	- [`connect() -> Promise`](#connect---promise)
 	- [`reconnect()`](#reconnect---promise)
 	- [`close()`](#close---promise)
@@ -25,20 +26,11 @@ The following options are used when creating an instance of mserv.
 - `amqp`: 
 URL of the AMQP server or by default amqp://localhost.
 
+- `app`: 
+App name to use in the default bunyan logger. Defaults to 'mserv'.
+
 - `callbackQueue`: 
 Name of the callback queue. By default the name of the callback queue is a random uuid.
-
-- `exchangeDirect`: 
-Services are normally invoked using a direct type of exchange. The default name is 'services', which it makes it clear that it's made for calling services.
-
-- `exchangeTopic`: 
-Services can both listen and publish on topical exchanges. The default name is 'exchange'.
-
-- `reconnectAttempts`: 
-If the connection cannot be established then the service will try to reconnect at regular intervals. The default is 10.
-
-- `reconnectDelay`: 
-The number of milliseconds to wait between reconnect attempts. The default is 2000.
 
 - `disableAMQPBypass`: 
 When true AMQP connection will always be used when invoking services even when the reside within the same process and could be called directly. The default value is false.
@@ -46,16 +38,43 @@ When true AMQP connection will always be used when invoking services even when t
 - `disableAutoconnect`: 
 When true the service won't automatically connect upon creation. The connection will need to be established manually. The default value is false.
 
+- `exchangeDirect`: 
+Services are normally invoked using a direct type of exchange. The default name is 'services', which it makes it clear that it's made for calling services.
+
+- `exchangeTopic`: 
+Services can both listen and publish on topical exchanges. The default name is 'exchange'.
+
+- `logger`:
+Provide you own instance of a bunyan logger. Defaults to null, which implies that the service will create its own instance.
+
+- `loglevel`:
+Loglevel to use for the default logger. This option is ignored if you provide your own logger. The default is 30 (Info) except if NODE_ENV is 'test', in which case it's 60 (Fatal).
+
+- `reconnectAttempts`: 
+If the connection cannot be established then the service will try to reconnect at regular intervals. The default is 10.
+
+- `reconnectDelay`: 
+The number of milliseconds to wait between reconnect attempts. The default is 2000.
+
 - `timeout`:
 Number of milliseconds that a microservice invocation will wait for a response before raising a timeout error. Defaults to 2000ms.
 
 
+<hr>
+##### `state() -> String`
+Returns the current state of the service.
+
+```js
+console.log(service.state())
+// Outputs: ready
+```
 
 
 <hr>
 ##### `connect() -> Promise`
 
-Manually connect to the AMQP server without regards for reconnect options.
+Manually connect to the AMQP server without regards for reconnect options. The promise resolves to the connection or rejects with the error.
+
 ```js
 service.connect().then(function(connection){
 	// Do something here...
@@ -68,7 +87,7 @@ service.connect().then(function(connection){
 <hr>
 ##### `reconnect() -> Promise`
 
-Manually reconnect to the AMQP server taking into account the reconnect options. The promise is resolved when a connection is established or rejected after a number of failed reconnect attempts.
+Manually reconnect to the AMQP server taking into account the reconnect options. The promise resolves to the connection or rejects with the error. 
 
 ```js
 service.reconnect().then(function(connection){
@@ -82,7 +101,7 @@ service.reconnect().then(function(connection){
 <hr>
 ##### `close() -> Promise`
 
-Manually close the connection to the AMQP server. This will also prevent any messages from being sent to remote microservices (local services still work). Remote requests will get queued and sent once the connection is re-established. Calling `close` manually will not trigger an automatic reconnect. If the connection is not yet established then the `close` request gets queued and will be executed after the connection is established.
+Manually close the connection to the AMQP server. This will also prevent any messages from being sent to remote microservices (local services still work). Remote requests will get queued and sent once the connection is re-established. Calling `close` manually will not trigger an automatic reconnect. If the connection is not yet established then the `close` request gets queued and will be executed after the connection is established. The promise resolves to true if all went well or false if something happened but will never reject.
 
 ```js
 service.close().then(function(){
@@ -318,9 +337,9 @@ service.subscribe({
 
 
 <hr>
-##### `publish(String topic [, Any args]) -> Boolean`
+##### `publish(String topic [, Any args]) -> Promise`
 
-Publishes a message on a topical exchange.
+Publishes a message on a topical exchange. The promise is resolves to ture once the command is issued and will reject with an error if for some reason the message could not be sent.
 
 - `name`: topic to publish the message to.
 - `args`: optional arguments that are passed to the microservice. This becomes this.req in the handler and should be JSON serializable.
@@ -336,9 +355,9 @@ service.publish('logs', 'Hello from mserv')
 
 
 <hr>
-##### `script(GeneratorFunction script) -> mserv`
+##### `script(GeneratorFunction script) -> Promise`
 
-Thin wrapper around co to execute in an empty context. The script will only get executed once the connection has been established. Until then it's only queued.
+Thin wrapper around co to execute in an empty context. The script will only get executed once the connection has been established. Until then it's only queued. The promise resolves the scripts return value or rejects if an error is thrown.
 
 ```js
 service.script(function*(){
