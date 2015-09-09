@@ -8,6 +8,11 @@ Mserv is a thin [koa](http://koajs.com)-style wrapper around [amqplib](http://ww
 
     npm i --save mserv
 
+## Note
+
+Because we use generators and a bit of es6 syntax the `--harmony` flag must be used.
+
+
 ## Example
 
 ```js
