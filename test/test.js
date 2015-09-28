@@ -210,4 +210,27 @@ describe('mserv', function(){
 			err.message.should.equal('Timeout')
 		}
 	}))
+
+	it('should throw a TypeError', wrappedTest(function*(){
+
+		var service = mserv()
+
+		service.action({
+			name: 'typeError',
+			handler: function*(){
+				throw new TypeError()
+			}
+		})
+
+		try {
+			yield service.invoke('typeError')
+			throw new Error('Invoke did not throw')
+		}
+		catch(err) {
+			if (err.message === 'Invoke did not throw')
+				throw err 
+
+			err.name.should.equal('TypeError')
+		}
+	}))
 })
