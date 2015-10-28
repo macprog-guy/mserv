@@ -104,7 +104,7 @@ describe('mserv', function(){
 		service.publish('test.foo', 'a')
 		service.publish('test.foo', 'b')
 		service.publish('test.foo', 'c')
-		yield service.sleep(500)
+		yield service.sleep(250)
 
 		array.should.eql(['a','b','c'])
 	}))
