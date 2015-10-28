@@ -1,6 +1,6 @@
 {
   "name": "mserv",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "Thin wrapper around amqplib to facilitate the creation of microservices communicating through an AMQP message broker using koa-style generator goodness.",
   "keywords": [
     "amqp",
