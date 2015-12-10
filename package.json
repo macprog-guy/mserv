@@ -1,6 +1,6 @@
 {
   "name": "mserv",
-  "version": "0.2.18",
+  "version": "0.2.19",
   "description": "Thin wrapper around amqplib to facilitate the creation of microservices communicating through an AMQP message broker using koa-style generator goodness.",
   "keywords": [
     "amqp",
@@ -36,7 +36,7 @@
     "amqplib": "^0.3.2",
     "async": "^1.4.2",
     "bluebird": "^3.0.5",
-    "bunyan": "^1.5.1",
+    "bunyan": "1.5.1",
     "co": "^4.6.0",
     "debug": "^2.2.0",
     "koa-compose": "^2.3.0",
