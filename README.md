@@ -1,3 +1,6 @@
+# NOT MAINTAINED ANYMORE!
+If you would like to own this project I can transfer it to you along with all the other related projects.
+
 # Introduction
 
 Mserv is a thin [koa](http://koajs.com)-style wrapper around [amqplib](http://www.squaremobius.net/amqp.node/doc/channel_api.html) to facilitate the creation of microservices communicating through an AMQP message broker. It also applies some excellent ideas taken from [hapi.js](http://hapijs.com).
